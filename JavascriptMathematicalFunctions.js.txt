@@ -1,0 +1,110 @@
+function getFactorial(n)
+{
+        var factorial=1;
+        for (var i = n; i>1; i--)
+        {
+              factorial=i*factorial;  
+        }
+        return factorial;
+}
+
+/*
+ * Description:
+ * Generates gamma function value... unfortuneatly with a integer argument only.
+ * 
+ * Example:
+ * getGamma(9); 
+ * returns 40320
+ */
+function getGamma(n)
+{
+        return getFactorial(n-1);
+}
+
+/*
+ * Description:
+ * Generates a Hankels expansion value, a(n+1/2,k) from a specified order and argument.
+ * 
+ * Example:
+ * getHankelsExpansion(3,5); 
+ * returns 10.5
+ */
+function getHankelsExpansion(n,k)
+{
+        return getFactorial(n+k)/(Math.pow(2,k)*getFactorial(k)*getFactorial(n-k));
+}
+
+/*
+ * Description:
+ * Generates the sphereical bessel function j(n,z) value from a specified order and fractional argument.
+ * 
+ * Example:
+ * getSphericalBesselFunctionJ(3,5); 
+ * returns 0.22982061816429603
+ */
+function getSphericalBesselFunctionJ(order, z)
+{
+        var J;
+        var sum1 = 0;
+        for (var k=0; k<=order/2; k++)
+        {
+            sum1 = sum1 + Math.pow(-1,k)*getHankelsExpansion(order,2*k)/(Math.pow(z,2*k+1));
+        }
+        sum1 = sum1*Math.sin(z-Math.PI*order*0.5);
+        var sum2 = 0;
+        for (var k=0; k<=((order-1)/2); k++)
+        {
+            sum2 = sum2 + Math.pow(-1,k)*getHankelsExpansion(order,2*k+1)/(Math.pow(z,2*k+2));
+        }
+        sum2 = sum2*Math.cos(z-Math.PI*order*0.5);
+        J = sum1+sum2;
+        return J;
+}
+
+/*
+ * Description:
+ * Generates the sphereical bessel function y(n,z) value from a specified order and fractional argument.
+ * 
+ * Example:
+ * getSphericalBesselFunctionY(3,5); 
+ * returns -0.015442909912994178
+ */
+function getSphericalBesselFunctionY(order, z)
+{
+        var Y;
+        var sum1 = 0;
+        for (var k=0; k<=order/2; k++)
+        {
+            sum1 = sum1 + Math.pow(-1,k)*getHankelsExpansion(order,2*k)/(Math.pow(z,2*k+1));
+        }
+        sum1 = sum1*-1*Math.cos(z-Math.PI*order/2);
+        var sum2 = 0;
+        for (var k=0; k<=((order-1)/2); k++)
+        {
+            sum2 = sum2 + Math.pow(-1,k)*getHankelsExpansion(order,2*k+1)/(Math.pow(z,2*k+2));
+        }
+        sum2 = sum2*Math.sin(z-Math.PI*order/2);
+        Y = sum1+sum2;
+        return Y;
+}
+
+/*
+ * Description:
+ * Generates a Legendre function value, P(m,u) as P(order,z) from a specified order and argument.
+ * 
+ * Example:
+ * getLegendreFunctionP(4,3); 
+ * returns 321
+ */
+function getLegendreFunctionP(order,z)
+{
+        var P;
+        var sum= 0;
+        for (var k=0; k<=order/2; k++)
+        {
+            sum = sum + (Math.pow(-1,k)*getFactorial(2*order-2*k)*Math.pow(z,order-2*k))/(getFactorial(k)*getFactorial(order-k)*getFactorial(order-2*k));
+        }
+        P = Math.pow(2,-order)*sum;
+        return P;       
+}
+
